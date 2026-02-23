@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    background-image: url('file:///C:/Users/nahar/OneDrive/Documents/Desktop/GR9_QTR2_PROJECT/bg.png');
+    background-size: cover;        /* makes the image fill the whole screen */
+    background-position: center;   /* centers the image */
+    background-repeat: no-repeat;  /* prevents tiling */
+    background-attachment: fixed;  /* image stays still while scrolling (optional) */
+    padding-top: 100px;
+}
+.navbar {
+    border-bottom: 10px solid #024a85;
+}
