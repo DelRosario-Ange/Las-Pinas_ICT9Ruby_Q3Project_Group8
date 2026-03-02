@@ -5,7 +5,6 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="icon" type="image/png" href="HAM TRAVEL.png">
     
-    <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -15,6 +14,11 @@
         align-items: center;
         height: 100vh;
         font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    #result{ 
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;
+        font-size:16px ;
     }
 
 </style>
@@ -33,8 +37,8 @@
             </button>
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="matrix.html">Fare Matrix</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index(Home).html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index(Matrix).html">Fare Matrix</a></li>
                     <li class="nav-item"><a class="nav-link" href="page3.html">Schedule</a></li>
                     <li class="nav-item"><a class="nav-link" href="page4.html">Help</a></li> 
                 </ul>
@@ -49,10 +53,44 @@
 
     <div class="card p-4 shadow">
         
-        <label>Distance (KM):</label>
-        <input type="number" id="distance" class="form-control mb-3">
+        <label><b>PICK-UP LOCATION</b></label>
+        <select id="PU" class="form-control mb-3">
+            <option id="SELECT">-- SELECT --</option>
+            <option id="NA" value="1">North Avenue</option>
+            <option id="QA" value="2">Quezon Avenue</option>
+            <option id="Kamuning" value="3">Kamuning</option>
+            <option id="ACC" value="4">Araneta Center-Cubao</option>
+            <option id="SA" value="5" >Santolan-Annapolis</option>
+            <option id="O" value="6">Ortigas</option>
+            <option id="SB" value="7">Shaw Boulevard</option>
+            <option id="Boni" value="8">Boni</option>
+            <option id="Guadalupe" value="9">Guadalupe</option>
+            <option id="Buendia" value="10">Buendia</option>
+            <option id="Ayala" value="11">Ayala</option>
+            <option id="Magallanes" value="12">Magallanes</option>
+            <option id="TA" value="13">Taft Avenue</option>
+        </select>
+        </select>
 
-        <label>Passenger Type:</label>
+        <label><b>DROP-OFF LOCATION</b></label>
+        <select id="DO" class="form-control mb-3">
+            <option id="SELECT">-- SELECT --</option>
+            <option id="NA" value="1">North Avenue</option>
+            <option id="QA" value="2">Quezon Avenue</option>
+            <option id="Kamuning" value="3">Kamuning</option>
+            <option id="ACC" value="4">Araneta Center-Cubao</option>
+            <option id="SA" value="5" >Santolan-Annapolis</option>
+            <option id="O" value="6">Ortigas</option>
+            <option id="SB" value="7">Shaw Boulevard</option>
+            <option id="Boni" value="8">Boni</option>
+            <option id="Guadalupe" value="9">Guadalupe</option>
+            <option id="Buendia" value="10">Buendia</option>
+            <option id="Ayala" value="11">Ayala</option>
+            <option id="Magallanes" value="12">Magallanes</option>
+            <option id="TA" value="13">Taft Avenue</option>
+        </select>
+
+        <label><b>PASSENGER TYPE</b></label>
         <select id="discount" class="form-control mb-3">
             <option value="regular">Regular</option>
             <option value="discounted">Senior / PWD / Student</option>
@@ -80,45 +118,59 @@
 <!-- JAVASCRIPT INSIDE HTML -->
 <script>
 
-    // Base values
-    let baseFare = 50;        // includes first 2KM
-    let perKMrate = 15;
-    let baseKM = 2;
+let baseFare = 50;
+let perKMrate = 15;
+let baseKM = 2;
 
-    function computeFare() {
+let stationValues = [
+    0, 1.2, 1, 1.9, 1.5, 2.3, 0.8, 1, 0.8, 2, 0.95, 1.2, 2.05
+];
 
-        // Get input value
-        let distance = parseFloat(document.getElementById("distance").value);
-        let discountType = document.getElementById("discount").value;
+function computeFare() {
 
-        let totalFare;
+    let PU = parseInt(document.getElementById("PU").value);
+    let DO = parseInt(document.getElementById("DO").value);
+    let discountType = document.getElementById("discount").value;
 
-        // If distance is within base KM
-        if (distance <= baseKM) {
-            totalFare = baseFare;
-        } 
-        else {
-            let extraKM = distance - baseKM;
-            totalFare = baseFare + (extraKM * perKMrate);
-        }
-
-        // Apply discount
-        if (discountType === "discounted") {
-            totalFare = totalFare - (totalFare * 0.20);
-        }
-
-        // Round off
-        totalFare = Math.round(totalFare);
-
-        // Output
-        document.getElementById("result").innerHTML = 
-            "Total Fare: ₱" + totalFare;
-
+    if (isNaN(PU) || isNaN(DO)) {
+        document.getElementById("result").innerHTML =
+        "Please select both stations.";
+        return;
     }
+
+    if (PU === DO) {
+        document.getElementById("result").innerHTML =
+        "Pick-up and Drop-off cannot be the same.";
+        return;
+    }
+
+    let totalDistance = 0;
+
+    // Determine direction
+    let start = Math.min(PU, DO);
+    let end = Math.max(PU, DO);
+
+    // Add all stations passed through
+    for (let i = start; i < end; i++) {
+        totalDistance += stationValues[i];
+    }
+
+    let totalFare = baseFare + (totalDistance * perKMrate);
+
+    // Apply discount
+    if (discountType === "discounted") {
+        totalFare *= 0.80;
+    }
+
+    totalFare = Math.round(totalFare);
+
+    document.getElementById("result").innerHTML =
+    "<b>Stations Passed:</b> " + (end - start) +
+    "<br><b>Total Distance:</b>" + totalDistance.toFixed(2) + " km" +
+    "<br><b>Total Fare:</b> ₱ " + totalFare;
+}
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
-
