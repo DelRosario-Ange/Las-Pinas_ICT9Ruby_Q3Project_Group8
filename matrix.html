@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- TITLE -->
     <title>HAM TRAVEL</title>
+
+    <!-- ICON -->
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="icon" type="image/png" href="HAM TRAVEL.png">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- BOOTSTRAP LINK -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <!-- STYLE -->
     <style>
     body {
         background: #e6f2ff;
@@ -29,12 +34,15 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
+        <!-- LOGO -->
         <a class="navbar-brand" href="#">
             <img src="HAM TRAVEL.png" alt="logo" height="60px">
         </a>
-         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <!-- COLLAPSE -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+        </button>
+                <!-- CHOICES/TABS -->
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="index(Home).html">Home</a></li>
@@ -42,6 +50,7 @@
                     <li class="nav-item"><a class="nav-link" href="page3.html">Schedule</a></li>
                     <li class="nav-item"><a class="nav-link" href="page4.html">Help</a></li> 
                 </ul>
+                <!-- BTN for CREATE ACCOUNT -->
                 <button class="btn ms-auto" style="background-color: hwb(188 0% 5%); color:white;"><a class="nav-link" href="registration.html">Create Account</a></button>
             </div>
     </div>
@@ -52,7 +61,7 @@
     <h2 class="text-center mb-4" style="font-size: 30px; padding-top: 20px;"><b>Fare Calculator</b></h2>
 
     <div class="card p-4 shadow">
-        
+        <!-- PICK-UP LOCATION -->
         <label><b>PICK-UP LOCATION</b></label>
         <select id="PU" class="form-control mb-3">
             <option id="SELECT">-- SELECT --</option>
@@ -72,6 +81,7 @@
         </select>
         </select>
 
+        <!-- DROP OFF LOCATION -->
         <label><b>DROP-OFF LOCATION</b></label>
         <select id="DO" class="form-control mb-3">
             <option id="SELECT">-- SELECT --</option>
@@ -90,12 +100,14 @@
             <option id="TA" value="13">Taft Avenue</option>
         </select>
 
+        <!-- PASSENGER TYPE -->
         <label><b>PASSENGER TYPE</b></label>
         <select id="discount" class="form-control mb-3">
             <option value="regular">Regular</option>
             <option value="discounted">Senior / PWD / Student</option>
         </select>
 <br>
+        <!-- BTN for COMPUTE -->
         <button onclick="computeFare()" class="btn" style="background-color: hwb(188 0% 5%); color: rgb(255, 255, 255);">
         <b> Compute Fare </b>  
         </button>
@@ -117,14 +129,14 @@
 
 <!-- JAVASCRIPT INSIDE HTML -->
 <script>
+    let baseFare = 50;
+    let perKMrate = 15;
+    let baseKM = 2;
 
-let baseFare = 50;
-let perKMrate = 15;
-let baseKM = 2;
-
-let stationValues = [
-    0, 1.2, 1, 1.9, 1.5, 2.3, 0.8, 1, 0.8, 2, 0.95, 1.2, 2.05
-];
+    //Order of stations
+    let stationValues = [
+        0, 1.2, 1, 1.9, 1.5, 2.3, 0.8, 1, 0.8, 2, 0.95, 1.2, 2.05
+    ];
 
 function computeFare() {
 
@@ -132,12 +144,14 @@ function computeFare() {
     let DO = parseInt(document.getElementById("DO").value);
     let discountType = document.getElementById("discount").value;
 
+    //for someone who chooses one station
     if (isNaN(PU) || isNaN(DO)) {
         document.getElementById("result").innerHTML =
         "Please select both stations.";
         return;
     }
 
+    //for when someone chooses to have the same pick up and drop of location
     if (PU === DO) {
         document.getElementById("result").innerHTML =
         "Pick-up and Drop-off cannot be the same.";
